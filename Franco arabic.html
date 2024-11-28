@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic to Franco-Arabic & Secret Code Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #d1aad5; /* Purple text color */
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+            overflow-x: hidden;
+        }
+        .container {
+            background-color: #22211d;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 90px;
+            max-width: 1000px;
+            margin: auto;
+            transition: all 0.3s ease-in-out;
+        }
+        h1, h2 {
+            font-weight: 600;
+            color: #03a9f4;
+            animation: fadeIn 1s ease-in-out;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-top: 15px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #444;
+            color: #d1aad5; /* Purple text in text area */
+            outline: none;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+        textarea:focus {
+            background-color: #555;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            color: #d1aad5; /* Purple text for output */
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Arabic to Franco-Arabic & Secret Code Converter</h1>
+
+        <!-- First Input: Arabic to Franco Conversion -->
+        <textarea id="inputText" placeholder="Enter Arabic text here..."></textarea>
+        <button onclick="convertToFranco()">Convert</button>
+        <div class="output" id="francoOutput"></div>
+        <div class="output" id="secretOutput"></div>
+
+        <!-- Second Input: Secret Code to Franco Conversion -->
+        <h2>Convert Secret Code to Franco-Arabic</h2>
+        <textarea id="secretCodeInput" placeholder="Enter secret code here..."></textarea>
+        <button onclick="convertSecretCodeToFranco()">Convert to Franco</button>
+        <div class="output" id="francoFromCodeOutput"></div>
+    </div>
+
+    <script>
+        const arabicToFrancoMap = {
+            'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': '7', 'خ': '5',
+            'د': 'd', 'ذ': 'th', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': '4', 'ص': '9',
+            'ض': 'dh', 'ط': 't', 'ظ': 'z', 'ع': '3', 'غ': '8', 'ف': 'f', 'ق': 'q',
+            'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h', 'و': 'w', 'ي': 'y',
+            'ى': 'a', 'ء': '2', 'أ': '2', 'إ': 'i', 'ؤ': 'o', 'ئ': 'i',
+            'ة': 'h', '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5',
+            '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+        };
+
+        const secretMap = {
+            'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7,
+            'h': 8, 'i': 9, 'j': 10, 'k': 11, 'l': 12, 'm': 13, 'n': 14,
+            'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21,
+            'v': 22, 'w': 23, 'x': 24, 'y': 25, 'z': 26,
+            '0': '"0"', '1': '"1"', '2': '"2"', '3': '"3"', '4': '"4"',
+            '5': '"5"', '6': '"6"', '7': '"7"', '8': '"8"', '9': '"9"'
+        };
+
+        function convertToFranco() {
+            const inputText = document.getElementById('inputText').value;
+            let francoText = '';
+
+            for (let i = 0; i < inputText.length; i++) {
+                const char = inputText[i];
+                francoText += arabicToFrancoMap[char] || char;
+            }
+
+            document.getElementById('francoOutput').innerText = 'Franco-Arabic: ' + francoText;
+
+            // Call the secret code function
+            convertToSecretCode(francoText);
+        }
+
+        function convertToSecretCode(text) {
+            let secretText = '';
+            for (let char of text) {
+                if (secretMap[char.toLowerCase()]) {
+                    secretText += secretMap[char.toLowerCase()] + ' ';
+                } else {
+                    secretText += char + ' ';
+                }
+            }
+
+            document.getElementById('secretOutput').innerText = 'Secret Code: ' + secretText.trim();
+        }
+
+        function convertSecretCodeToFranco() {
+            const secretCodeInput = document.getElementById('secretCodeInput').value;
+            const codeArray = secretCodeInput.split(' ').map(item => item.trim());
+            let francoOutput = '';
+
+            for (let item of codeArray) {
+                if (item.includes('"')) {  // It's a number in quotes
+                    francoOutput += item.replace('"', '').replace('"', '') + ' ';
+                } else if (parseInt(item)) {  // Convert number to Franco letter
+                    for (let letter in secretMap) {
+                        if (secretMap[letter] == item) {
+                            francoOutput += letter;
+                            break;
+                        }
+                    }
+                } else {
+                    francoOutput += item + ' ';
+                }
+            }
+
+            document.getElementById('francoFromCodeOutput').innerText = 'Franco-Arabic: ' + francoOutput.trim();
+        }
+    </script>
+</body>
+</html>
