@@ -86,16 +86,17 @@
         <div class="output" id="secretOutput"></div>
 
         <!-- Second Input: Secret Code to Franco Conversion -->
-        <h2>Convert Secret Code to Franco-Arabic</h2>
+        <h1>Convert Secret Code to Franco-Arabic</h1>
         <textarea id="secretCodeInput" placeholder="Enter secret code here..."></textarea>
-        <button onclick="convertSecretCodeToFranco()">Convert to Franco</button>
+        <button onclick="convertSecretCodeToFrancoAndArabic()">Convert</button>
         <div class="output" id="francoFromCodeOutput"></div>
+        <div class="output" id="arabicOutput"></div> <!-- Arabic output section -->
     </div>
 
     <script>
         const arabicToFrancoMap = {
             'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': '7', 'خ': '5',
-            'د': 'd', 'ذ': 'th', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': '4', 'ص': '9',
+            'د': 'd', 'ذ': 'th', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': '4', 'ص': 's',
             'ض': 'dh', 'ط': 't', 'ظ': 'z', 'ع': '3', 'غ': '8', 'ف': 'f', 'ق': 'q',
             'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h', 'و': 'w', 'ي': 'y',
             'ى': 'a', 'ء': '2', 'أ': '2', 'إ': 'i', 'ؤ': 'o', 'ئ': 'i',
@@ -110,6 +111,13 @@
             'v': 22, 'w': 23, 'x': 24, 'y': 25, 'z': 26,
             '0': '"0"', '1': '"1"', '2': '"2"', '3': '"3"', '4': '"4"',
             '5': '"5"', '6': '"6"', '7': '"7"', '8': '"8"', '9': '"9"'
+        };
+
+        const francoToArabicMap = {
+            'a': 'ا', 'b': 'ب', 't': 'ت', 'th': 'ث', 'j': 'ج', '7': 'ح', '5': 'خ',
+            'd': 'د', 'r': 'ر', 'z': 'ز', 's': 'س', '4': 'ش', 's': 'ص', 'dh': 'ض',
+            '3': 'ع', '8': 'غ', 'f': 'ف', 'q': 'ق', 'k': 'ك', 'l': 'ل', 'm': 'م',
+            'n': 'ن', 'h': 'ه', 'w': 'و', 'y': 'ي', '2': 'ء', 'i': 'إ', 'o': 'ؤ'
         };
 
         function convertToFranco() {
@@ -140,7 +148,7 @@
             document.getElementById('secretOutput').innerText = 'Secret Code: ' + secretText.trim();
         }
 
-        function convertSecretCodeToFranco() {
+        function convertSecretCodeToFrancoAndArabic() {
             const secretCodeInput = document.getElementById('secretCodeInput').value;
             const codeArray = secretCodeInput.split(' ').map(item => item.trim());
             let francoOutput = '';
@@ -161,6 +169,17 @@
             }
 
             document.getElementById('francoFromCodeOutput').innerText = 'Franco-Arabic: ' + francoOutput.trim();
+
+            // تحويل الفرنكو إلى عربي
+            let arabicOutput = '';
+            for (let word of francoOutput.trim().split(' ')) {
+                for (let i = 0; i < word.length; i++) {
+                    const char = word[i];
+                    arabicOutput += francoToArabicMap[char] || char;
+                }
+                arabicOutput += ' ';
+            }
+            document.getElementById('arabicOutput').innerText = 'Arabic: ' + arabicOutput.trim();
         }
     </script>
 </body>
